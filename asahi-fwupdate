@@ -21,9 +21,9 @@ fi
 umount=false
 
 if [ -z "$ASAHIFW" ] && [ -z "$VENDORFW" ]; then
-    mount_sys_esp /run/.system-efi
-    ASAHIFW="/run/.system-efi/asahi/"
-    VENDORFW="/run/.system-efi/vendorfw"
+    mount_sys_esp /efi
+    ASAHIFW="/efi/asahi/"
+    VENDORFW="/efi/vendorfw"
     umount=true
 fi
 
@@ -48,6 +48,3 @@ rm -rf "$VENDORFW"
 mv "$VENDORFW".new "$VENDORFW"
 rm -rf "$VENDORFWTMP"
 echo "Firmware upgraded"
-
-$umount && umount /run/.system-efi
-true
