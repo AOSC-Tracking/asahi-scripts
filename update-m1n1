@@ -13,11 +13,16 @@ else
     . /usr/share/asahi-scripts/functions.sh
 fi
 
+if [ ! -d /usr/lib/aosc-os-arm64-boot/dtbs-* ]; then
+    echo "No kernel and device tree available, skipping update ..."
+    exit 0
+fi
+
 : ${SOURCE:="/usr/lib/asahi-boot/"}
 : ${M1N1:="$SOURCE/m1n1.bin"}
 : ${U_BOOT:="$SOURCE/u-boot-nodtb.bin"}
 : ${TARGET:="$1"}
-: ${DTBS:=$(/bin/ls -d /lib/modules/*-ARCH | sort -rV | head -1)/dtbs/*.dtb}
+: ${DTBS:=/usr/lib/aosc-os-arm64-boot/dtbs-kernel-$(basename $(ls -d /usr/lib/modules/*-aosc-asahi | sort -rV | head -1 ))/*.dtb}
 : ${CONFIG:=/etc/m1n1.conf}
 
 umount=false
@@ -43,9 +48,8 @@ if [ -e "$CONFIG" ]; then
 fi
 
 if [ -z "$TARGET" ]; then
-    mount_sys_esp /run/.system-efi
-    TARGET="/run/.system-efi/m1n1/boot.bin"
-    umount=true
+    mount_sys_esp /efi
+    TARGET="/efi/m1n1/boot.bin"
 fi
 
 cat "$M1N1" $DTBS >"${TARGET}.new"
@@ -56,5 +60,3 @@ cat "$m1n1config" >>"${TARGET}.new"
 mv -f "${TARGET}.new" "$TARGET"
 
 echo "m1n1 updated at ${TARGET}"
-$umount && umount /run/.system-efi
-true
