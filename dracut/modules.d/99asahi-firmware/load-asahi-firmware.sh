@@ -30,19 +30,19 @@ fi
 # If the above exists, hopefully the /dev device exists and this will work
 info ":: Asahi: Unpacking vendor firmware into initramfs..."
 
-VENDORFW="/run/.system-efi/vendorfw/"
+VENDORFW="/efi/vendorfw/"
 
 (
     . /usr/share/asahi-scripts/functions.sh
-    mount_sys_esp /run/.system-efi
+    mount_sys_esp /efi
 )
 
 if [ ! -e "$VENDORFW/firmware.cpio" ]; then
     warn ":: Asahi: Vendor firmware not found in ESP."
-    umount /run/.system-efi
+    umount /efi
     return 1
 fi
 
 ( cd /; cpio --quiet -i < "$VENDORFW/firmware.cpio" )
 info ":: Asahi firmware unpacked successfully"
-umount /run/.system-efi
+umount /efi
