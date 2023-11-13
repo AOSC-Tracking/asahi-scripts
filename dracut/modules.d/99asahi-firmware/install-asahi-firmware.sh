@@ -4,9 +4,9 @@
 type getarg > /dev/null 2>&1 || . /lib/dracut-lib.sh
 
 info ":: Asahi: Installing vendor firmware to root filesystem..."
-if [ ! -d /sysroot/lib/firmware/vendor ]; then
+if [ ! -d /sysroot/usr/lib/firmware/vendor ]; then
     warn ":: Asahi: Vendor firmware directory missing on the root filesystem!"
     return 1
 fi
-mount -t tmpfs -o mode=0755 vendorfw /sysroot/lib/firmware/vendor
-cp -a /vendorfw/* /vendorfw/.vendorfw.manifest /sysroot/lib/firmware/vendor
+mount -t tmpfs -o mode=0755 vendorfw /sysroot/usr/lib/firmware/vendor
+cp -a /vendorfw/* /vendorfw/.vendorfw.manifest /sysroot/usr/lib/firmware/vendor
