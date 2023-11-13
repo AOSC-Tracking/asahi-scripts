@@ -4,7 +4,7 @@
 
 info() {
     quiet=0
-    if [ -e /lib/dracut-lib.sh ]; then
+    if [ -e /usr/lib/dracut-lib.sh ]; then
         if grep -q "rd.debug" /proc/cmdline; then
             quiet=0
         elif grep -q "quiet" /proc/cmdline; then

@@ -25,8 +25,8 @@ installkernel() {
 
 # called by dracut
 install() {
-    inst_dir "/lib/firmware"
-    ln_r "/vendorfw" "/lib/firmware/vendor"
+    inst_dir "/usr/lib/firmware"
+    ln_r "/vendorfw" "/usr/lib/firmware/vendor"
     asahiscriptsdir="/usr/share/asahi-scripts"
     inst_dir $asahiscriptsdir
     $DRACUT_CP -R -L -t "${initdir}/${asahiscriptsdir}" "${dracutsysrootdir}${asahiscriptsdir}"/*
