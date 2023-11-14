@@ -50,5 +50,6 @@ update-grub
 update-grub
 
 echo "All done, self-destroying ..."
-rm -v /usr/lib/systemd/system/multi-user.target.wants/asahi-first-boot.service
+rm -v /usr/lib/systemd/system/multi-user.target.wants/first-boot.service
+rm -v /usr/lib/systemd/system/first-boot.service
 rm -v $(realpath "$0")
