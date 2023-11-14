@@ -53,3 +53,7 @@ echo "All done, self-destroying ..."
 rm -v /usr/lib/systemd/system/multi-user.target.wants/first-boot.service
 rm -v /usr/lib/systemd/system/first-boot.service
 rm -v "$0"
+
+echo "Rebooting ..."
+sync
+reboot -f
