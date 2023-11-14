@@ -13,7 +13,7 @@ else
     . /usr/share/asahi-scripts/functions.sh
 fi
 
-if [ ! -d /usr/lib/aosc-os-arm64-boot/dtbs-* ]; then
+if ! ls -d /usr/lib/aosc-os-arm64-boot/dtbs-* 2>&1 1>/dev/null ; then
     echo "No kernel and device tree available, skipping update ..."
     exit 0
 fi
