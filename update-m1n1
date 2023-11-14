@@ -53,7 +53,9 @@ if [ -e "$CONFIG" ]; then
 fi
 
 if [ -z "$TARGET" ]; then
-    mount_sys_esp /efi
+    if ! mount_sys_esp /efi; then
+        return 0;
+    fi
     TARGET="/efi/m1n1/boot.bin"
 fi
 
@@ -72,3 +74,5 @@ fi
 mv -f "${TARGET}.new" "$TARGET"
 
 echo "m1n1 updated at ${TARGET}"
+
+# :vim set sts=4 ts=4 sw=4 expandtab:
