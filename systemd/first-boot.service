@@ -24,7 +24,7 @@ Before=shutdown.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/first-boot
+ExecStart=/usr/bin/first-boot
 StandardOutput=tty
 StandardInput=tty
 StandardError=tty
