@@ -29,10 +29,12 @@ if [ -e "$efi_dev" ] && \
 
     echo "Randomizing EFI system partition UUID..."
     # Ugly... why isn't there a command to do this?
-    ssize="$(blockdev --getss "$efi_dev")"
-    dd bs=1 seek=67 count=4 conv=notrunc if=/dev/urandom of="$efi_dev"
-    dd bs=1 skip=67 seek=$((67+6*$ssize)) count=4 conv=notrunc if="$efi_dev" of="$efi_dev"
-
+    # Yes of course, fatlabel(8) actually provides such feature, but the UUID
+    # should be privided instead of generating it automatically.
+    # Generate a 32-bit long UUID
+    efi_uuid=$(dd if=/dev/random bs=4 count=1 status=none | hexdump -e '"%04x"')
+    # Set the above as the new volume ID for the EFI partiton
+    fatlabel -i "$efi_dev" $efi_uuid
     efi_uuid="$(blkid -c /dev/null "$efi_dev" -o export | grep '^UUID=')"
     echo "EFI partition: $efi_uuid"
     echo
