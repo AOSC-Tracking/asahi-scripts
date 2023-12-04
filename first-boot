@@ -19,7 +19,10 @@ if [ -e "$root_dev" ]; then
     echo "Randomizing root filesystem UUID..."
     tune2fs -U random "$root_dev"
 
-    root_uuid="$(blkid -c /dev/null "$root_dev" -o export | grep '^UUID=')"
+    # root_uuid="$(blkid -c /dev/null "$root_dev" -o export | grep '^UUID=')"
+    # Use eval to evaluate the output of blkid:
+    eval "$(blkid -c /dev/null "$root_dev" -o export)"
+    root_uuid="$UUID"
     echo "Root filesystem: $root_uuid"
     echo
 fi
@@ -34,8 +37,9 @@ if [ -e "$efi_dev" ] && \
     # Generate a 32-bit long UUID
     efi_uuid=$(dd if=/dev/random bs=4 count=1 status=none | hexdump -e '"%04x"')
     # Set the above as the new volume ID for the EFI partiton
-    fatlabel -i "$efi_dev" $efi_uuid
-    efi_uuid="$(blkid -c /dev/null "$efi_dev" -o export | grep '^UUID=')"
+    fatlabel -i "$efi_dev" "$efi_uuid"
+    eval "$(blkid -c /dev/null "$efi_dev" -o export)"
+    efi_uuid="$UUID"
     echo "EFI partition: $efi_uuid"
     echo
 fi
